@@ -4,5 +4,5 @@ from django.urls import reverse
 from django.views import generic
 
 def home(request):
-    template_name = 'polls/home.html'
-    return render(request, 'polls/home.html')
+    #template_name = 'home.html'
+    return render(request, 'home.html')
