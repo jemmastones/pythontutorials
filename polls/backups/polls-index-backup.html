@@ -25,32 +25,28 @@
 
 	<div class="container">
 
-        <div style="height:100px">&nbsp;
-        <p><h2>Gap Analysis Tool</h2></p>
-        </div>
 
-        <div name="realdata" class=".col-12 .col-sm-6 .col-lg-8">
+    {% if latest_question_list %}
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Placeholder</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for question in latest_question_list %}
+        <tr>
+            <td><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></td>
+            <td>Placeholder</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-        {% if latest_question_list %}
+    {% else %}
+    <p>No polls are available.</p>{% endif %}
 
-            <form>
-            {% for question, choice in latest_question_list.items %}
-                <h5><a href={{ question.id }}>{{ question.question_text }}</a> </h5>
-
-                    {%  for choiceitem in choice  %}
-                        <input type="radio" name="{{ question.id }}" id="choice{{ choice.id }}" value="{{ choiceitem.id }}" />
-                        <label for="choice{{ choice.id }}">{{ choiceitem.choice_text }}</label><br />
-                    {% endfor %}
-            {% endfor %}
-            <input type="submit" value="Submit" />
-            </form>
-
-        {% else %}
-        <p>No polls are available.</p>{% endif %}
-
-        </div>
-
-
-    </div>
+	</div><!-- /.container -->
 </body>
 </html>

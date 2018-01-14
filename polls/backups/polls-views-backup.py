@@ -2,42 +2,34 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
+
 from .models import Choice, Question
 
-# Home Page
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    model = Question
+
+    def get_queryset(self):
+        return Question.objects.order_by('-pub_date')[:5]
+        return Choice.objects.all()
+
+
 def home(request):
     template_name = 'polls/home.html'
     return render(request, 'polls/home.html')
 
-# Gap Analysis Home
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
-
-    def get_queryset(self):
-
-        resultset = {}
-
-        for q in Question.objects.raw('select * from polls_question'):
-            choicelist = []
-            for c in Choice.objects.raw('select * from polls_choice where question_id=' + str(q.id)):
-                choicelist.append(c)
-                resultset[q]=choicelist
-
-        return resultset
-
-
-# DEPRECATED: Individual Question (Detail)
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
 
-# DEPRECATED: Poll Result
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
-# DEPRECATED: Vote Function
+# Create your views here.
+
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
