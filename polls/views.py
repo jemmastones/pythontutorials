@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views import generic
 
@@ -15,10 +15,13 @@ class IndexView(generic.ListView):
         return Question.objects.order_by('-pub_date')[:5]
 
 
+def home(request):
+    template_name = 'polls/home.html'
+    return render(request, 'polls/home.html')
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
-
 
 class ResultsView(generic.DetailView):
     model = Question
